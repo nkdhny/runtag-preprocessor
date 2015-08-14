@@ -1,0 +1,20 @@
+from distutils.core import setup, Extension
+
+opencv_libs = "${OpenCV_LIBS}".split(';')
+
+preprocessormodule = Extension('runtag.preprocessor',
+                    define_macros = [('MAJOR_VERSION', '1'),
+                                     ('MINOR_VERSION', '0')],
+                    include_dirs = ['${RUNTAG_INCLUDE_DIR}', '/usr/include'],
+                    libraries = ['runtagdetector', 'numpyconversions', 'boost_python']+opencv_libs,
+                    library_dirs = ['${RUNTAG_LIBRARY_DIR}', '/usr/lib'],
+                    extra_compile_args = ['-std=c++11'],
+                    sources = ['${CMAKE_CURRENT_SOURCE_DIR}/pypreprocessor.cpp'])
+
+setup (name = 'runtag',
+       version = '1.0',
+       description = 'Runtag public routines',
+       author = 'Alexey Golomedov',
+       author_email = 'golomedov@gmail.com',
+       packages=['runtag'],
+       ext_modules = [preprocessormodule])
